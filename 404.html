@@ -34,14 +34,24 @@
               title: '扫码点单 · 天枢点单',
               icon: '/test/t/favicon.svg',
               css: '/test/t/assets/h5-app.css',
-              mocks: ['/test/assets/mock-core.js', '/test/t/mock-h5.js'],
+              mocks: [
+                '/test/assets/mqtt.min.js',
+                '/test/assets/live-sync.js',
+                '/test/assets/mock-core.js',
+                '/test/t/mock-h5.js',
+              ],
               app: '/test/t/assets/h5-app.js',
             }
           : {
               title: '天枢点单 · 商户工作台',
               icon: '/test/admin/favicon.svg',
               css: '/test/admin/assets/admin-app.css',
-              mocks: ['/test/assets/mock-core.js', '/test/admin/mock-admin.js'],
+              mocks: [
+                '/test/assets/mqtt.min.js',
+                '/test/assets/live-sync.js',
+                '/test/assets/mock-core.js',
+                '/test/admin/mock-admin.js',
+              ],
               app: '/test/admin/assets/admin-app.js',
             };
 

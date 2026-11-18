@@ -447,6 +447,20 @@
     } catch (e) {
       /* 隐私模式下忽略持久化 */
     }
+    // 交给实时同步层广播（手机下单 → 商户后台立刻收到）
+    if (typeof window.TSOnDbSave === 'function') {
+      try {
+        window.TSOnDbSave(state);
+      } catch (e) {
+        /* 同步失败不影响本机使用 */
+      }
+    }
+  }
+
+  /** 收到其他设备的数据后清缓存，下次请求重新读取 localStorage */
+  function reload() {
+    state = null;
+    return load();
   }
 
   function reset() {
@@ -736,6 +750,9 @@
       reset();
       return load();
     };
+    window.TSMockReload = function () {
+      return reload();
+    };
   }
 
   function readFileAsDataUrl(file) {
@@ -753,6 +770,7 @@
     DB_KEY: DB_KEY,
     load: load,
     save: save,
+    reload: reload,
     reset: reset,
     install: install,
     error: error,
