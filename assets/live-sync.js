@@ -18,9 +18,9 @@
 
   var CFG = {
     broker: 'wss://broker.emqx.io:8084/mqtt',
-    namespace: 'dsh-tianshu-order-demo/v2/',
+    namespace: 'dsh-tianshu-order-demo/v3/',
     dbKey: 'ts_demo_db_v1',
-    versionKey: 'ts_demo_db_v1__v2',
+    versionKey: 'ts_demo_db_v1__v3',
     republishDelayMs: 1500,
   };
   var TOPIC_STATE = CFG.namespace + 'state';
