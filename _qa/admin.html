@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>天枢点单 · 线上验收</title>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f7f3ee; color: #2b2118; font: 15px/1.7 -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif; }
+      .card { background: #fff; border-radius: 18px; padding: 26px 30px; box-shadow: 0 18px 50px rgba(120, 80, 40, .12); max-width: 460px; }
+      h1 { margin: 0 0 6px; font-size: 19px; }
+      p { margin: 0 0 10px; color: #7a6a58; font-size: 13px; }
+      a { color: #ff5a1f; font-weight: 600; text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>线上验收 · 商户后台</h1>
+      <p>正在写入演示登录态（mock-staff-demo），随后自动进入商户工作台。</p>
+      <p>如果没有自动跳转，请点击 <a href="/test/admin/">/test/admin/</a>。</p>
+    </div>
+    <script>
+      try {
+        localStorage.setItem('ts_token', 'mock-staff-demo');
+      } catch (e) {}
+      location.replace('/test/admin/');
+    </script>
+  </body>
+</html>
