@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0b0a18" />
+<title>广告学 · 一分钟速览</title>
+<style>
+  :root{
+    --gold:#FFB627;
+    --pink:#FF4D6D;
+    --cyan:#4CC9F0;
+    --text:#ECEAF6;
+    --muted:rgba(236,234,246,.62);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#0b0a18;
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    overflow:hidden;
+  }
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background:
+      radial-gradient(58vw 58vw at 12% 8%, rgba(124,77,255,.30), transparent 62%),
+      radial-gradient(52vw 52vw at 92% 88%, rgba(255,77,109,.20), transparent 62%),
+      radial-gradient(46vw 46vw at 85% 12%, rgba(76,201,240,.14), transparent 60%);
+    pointer-events:none;z-index:0;
+  }
+
+  /* ---------- 滚动容器 ---------- */
+  .scroller{
+    position:relative;z-index:1;
+    height:100vh;height:100dvh;
+    overflow-y:scroll;
+    scroll-snap-type:y mandatory;
+    overscroll-behavior:contain;
+    scrollbar-width:none;
+  }
+  .scroller::-webkit-scrollbar{display:none;}
+
+  .page{
+    position:relative;
+    height:100vh;height:100dvh;
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:36px 24px calc(36px + env(safe-area-inset-bottom));
+    overflow:hidden;
+  }
+
+  /* ---------- 入场动画 ---------- */
+  .reveal{
+    opacity:0;transform:translateY(26px);
+    transition:opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1);
+    transition-delay:var(--d,0s);
+  }
+  .page.in .reveal{opacity:1;transform:none;}
+
+  /* ---------- 通用排版 ---------- */
+  .kicker{
+    font-size:12px;letter-spacing:.18em;font-weight:600;
+    color:var(--gold);margin-bottom:10px;
+  }
+  h1{
+    font-size:clamp(42px,14vw,66px);
+    line-height:1.04;letter-spacing:-.02em;margin:0 0 20px;font-weight:800;
+  }
+  h1 span{display:block;}
+  h2{
+    font-size:clamp(27px,8.5vw,38px);
+    line-height:1.15;letter-spacing:-.01em;margin:0 0 12px;font-weight:800;
+  }
+  .accent{
+    background:linear-gradient(100deg,#FFB627,#FF4D6D 55%,#C77DFF);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .sub,.lead{
+    font-size:14.5px;line-height:1.65;color:var(--muted);margin:0 0 20px;
+  }
+  .card{
+    background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.11);
+    border-radius:20px;padding:16px 18px;
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  }
+  .card b{font-size:14.5px;display:block;margin-bottom:6px;}
+  .card p{margin:0;font-size:13px;line-height:1.6;color:rgba(236,234,246,.66);}
+
+  /* ---------- 封面 ---------- */
+  .badge{
+    display:inline-block;width:fit-content;
+    font-size:11.5px;letter-spacing:.14em;
+    padding:6px 12px;border-radius:999px;
+    border:1px solid rgba(255,182,39,.35);
+    color:var(--gold);background:rgba(255,182,39,.08);
+    margin-bottom:20px;
+  }
+  .scroll-hint{
+    position:absolute;left:50%;bottom:34px;
+    transform:translateX(-50%);
+    font-size:12px;color:rgba(236,234,246,.45);
+    animation:bob 1.8s ease-in-out infinite;
+    white-space:nowrap;
+  }
+  @keyframes bob{
+    0%,100%{transform:translate(-50%,0);}
+    50%{transform:translate(-50%,8px);}
+  }
+
+  /* ---------- AIDA ---------- */
+  .aida{list-style:none;margin:0;padding:0;display:grid;gap:11px;}
+  .aida li{display:flex;gap:13px;align-items:flex-start;}
+  .aida .k{
+    flex:0 0 36px;height:36px;border-radius:12px;
+    display:grid;place-items:center;
+    font-weight:800;font-size:16px;
+    background:rgba(255,182,39,.13);
+    border:1px solid rgba(255,182,39,.30);
+    color:var(--gold);
+  }
+  .aida b{font-size:14.5px;}
+  .aida p{margin:3px 0 0;font-size:12.5px;line-height:1.4;color:rgba(236,234,246,.58);}
+
+  /* ---------- 要点列表 ---------- */
+  .rules{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:9px;}
+  .rules li{
+    position:relative;padding-left:22px;
+    font-size:13.5px;line-height:1.5;color:rgba(236,234,246,.82);
+  }
+  .rules li::before{
+    content:"";position:absolute;left:6px;top:8px;
+    width:6px;height:6px;border-radius:50%;background:var(--cyan);
+  }
+  .quote{
+    margin:18px 0 0;font-size:13.5px;line-height:1.6;
+    font-style:italic;color:rgba(255,182,39,.9);
+  }
+
+  /* ---------- 4P ---------- */
+  .p4{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;
+  }
+  .p4 span{
+    padding:13px 8px;border-radius:14px;text-align:center;
+    font-size:13px;font-weight:600;letter-spacing:.02em;
+    color:rgba(236,234,246,.86);
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.10);
+  }
+
+  /* ---------- 小测验 ---------- */
+  .quiz{
+    background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:16px;padding:14px;margin-bottom:11px;
+  }
+  .quiz .q{margin:0 0 11px;font-size:13.5px;line-height:1.5;}
+  .opts{display:flex;flex-wrap:wrap;gap:8px;}
+  .opt{
+    font:inherit;font-size:12.5px;line-height:1.2;
+    color:rgba(236,234,246,.86);
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:10px;padding:8px 12px;cursor:pointer;
+    transition:background .25s,border-color .25s,color .25s,transform .15s;
+  }
+  .opt:active{transform:scale(.96);}
+  .opt.ok{
+    background:rgba(76,201,240,.18);
+    border-color:rgba(76,201,240,.70);
+    color:#9BE3FF;
+  }
+  .opt.bad{
+    background:rgba(255,77,109,.15);
+    border-color:rgba(255,77,109,.60);
+    color:#FFB3C0;
+  }
+  .quiz .tip{
+    display:none;margin:9px 0 0;
+    font-size:12px;line-height:1.55;color:rgba(236,234,246,.55);
+  }
+  .quiz.done .tip{display:block;}
+
+  /* ---------- 结算页 ---------- */
+  .score{display:flex;align-items:baseline;gap:8px;margin:0 0 18px;}
+  .score b{font-size:46px;line-height:1;color:var(--gold);font-weight:800;}
+  .score span{font-size:13px;color:rgba(236,234,246,.55);}
+  .again{
+    width:fit-content;font:inherit;font-size:14px;font-weight:700;
+    color:#0b0a18;border:none;border-radius:14px;
+    padding:13px 26px;cursor:pointer;
+    background:linear-gradient(100deg,#FFB627,#FF8A3D);
+    box-shadow:0 10px 26px rgba(255,150,60,.28);
+    transition:transform .15s;
+  }
+  .again:active{transform:scale(.96);}
+
+  /* ---------- 侧边导航点 ---------- */
+  .dots{
+    position:fixed;right:11px;top:50%;transform:translateY(-50%);
+    display:flex;flex-direction:column;gap:10px;z-index:10;
+  }
+  .dot{
+    width:6px;height:6px;padding:0;border:none;border-radius:50%;
+    background:rgba(255,255,255,.22);cursor:pointer;
+    transition:background .3s,height .3s,border-radius .3s;
+  }
+  .dot.active{background:var(--gold);height:18px;border-radius:3px;}
+</style>
+</head>
+<body>
+
+<div class="scroller" id="scroller">
+
+  <!-- 1 封面 -->
+  <section class="page">
+    <div class="badge reveal" style="--d:.05s">H5 · 移动端微课</div>
+    <h1 class="reveal" style="--d:.15s">
+      <span>广告学</span>
+      <span class="accent">一分钟</span>
+    </h1>
+    <p class="sub reveal" style="--d:.30s">
+      4 个经典理论 &nbsp;+&nbsp; 2 道小题<br>看懂广告为什么能说服人
+    </p>
+    <div class="scroll-hint">下滑开始 ↓</div>
+  </section>
+
+  <!-- 2 AIDA -->
+  <section class="page">
+    <div class="kicker reveal" style="--d:.05s">理论 01</div>
+    <h2 class="reveal" style="--d:.12s">AIDA 模型</h2>
+    <p class="lead reveal" style="--d:.20s">一条广告说服人的四步路径</p>
+
+    <ul class="aida">
+      <li class="reveal" style="--d:.28s">
+        <span class="k">A</span>
+        <div><b>Attention 注意</b><p>3 秒内抓住眼球，否则后面全白费</p></div>
+      </li>
+      <li class="reveal" style="--d:.36s">
+        <span class="k">I</span>
+        <div><b>Interest 兴趣</b><p>让他愿意继续看下去</p></div>
+      </li>
+      <li class="reveal" style="--d:.44s">
+        <span class="k">D</span>
+        <div><b>Desire 欲望</b><p>把「还不错」变成「我想要」</p></div>
+      </li>
+      <li class="reveal" style="--d:.52s">
+        <span class="k">S</span>
+        <div><b>Action 行动</b><p>给一个立刻行动的理由</p></div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 3 USP -->
+  <section class="page">
+    <div class="kicker reveal" style="--d:.05s">理论 02</div>
+    <h2 class="reveal" style="--d:.12s">USP</h2>
+    <p class="lead reveal" style="--d:.20s">独特销售主张 —— 一句话说出别人给不了的好处</p>
+
+    <ul class="rules">
+      <li class="reveal" style="--d:.28s">每一则广告都提出一个明确的主张</li>
+      <li class="reveal" style="--d:.34s">这个主张对手没有提出，也做不到</li>
+      <li class="reveal" style="--d:.40s">它足够有力，能打动千百万人</li>
+    </ul>
+
+    <div class="card reveal" style="--d:.48s">
+      <b>经典案例</b>
+      <p>M&amp;M's：「只溶在口，不溶在手。」<br>把糖衣这个小细节，变成了别人抢不走的购买理由。</p>
+    </div>
+  </section>
+
+  <!-- 4 定位 -->
+  <section class="page">
+    <div class="kicker reveal" style="--d:.05s">理论 03</div>
+    <h2 class="reveal" style="--d:.12s">定位</h2>
+    <p class="lead reveal" style="--d:.20s">你不是在跟对手的产品竞争，<br>你是在消费者的心智里竞争。</p>
+
+    <div class="card reveal" style="--d:.28s">
+      <b>案例：七喜</b>
+      <p>可乐已经占住了「可乐」这个词。七喜不再硬碰，而是把自己定义成「非可乐」（Uncola），在货架上开辟出一个全新的位置。</p>
+    </div>
+
+    <p class="quote reveal" style="--d:.38s">「做第一，比做更好更容易被记住。」</p>
+  </section>
+
+  <!-- 5 4P + IMC -->
+  <section class="page">
+    <div class="kicker reveal" style="--d:.05s">理论 04</div>
+    <h2 class="reveal" style="--d:.12s">4P 与 IMC</h2>
+    <p class="lead reveal" style="--d:.20s">广告不是孤岛，而是传播组合里的一块拼图。</p>
+
+    <div class="p4">
+      <span class="reveal" style="--d:.26s">Product 产品</span>
+      <span class="reveal" style="--d:.32s">Price 价格</span>
+      <span class="reveal" style="--d:.38s">Place 渠道</span>
+      <span class="reveal" style="--d:.44s">Promotion 推广</span>
+    </div>
+
+    <div class="card reveal" style="--d:.52s">
+      <b>IMC 整合营销传播</b>
+      <p>用一个声音说话：广告、公关、促销、包装、客服……所有触点传递同一个主张。</p>
+    </div>
+  </section>
+
+  <!-- 6 小测验 -->
+  <section class="page">
+    <div class="kicker reveal" style="--d:.05s">随堂小测</div>
+    <h2 class="reveal" style="--d:.12s">测一测</h2>
+    <p class="lead reveal" style="--d:.18s">点选你认为正确的答案</p>
+
+    <div class="quiz reveal" data-answer="1" style="--d:.26s">
+      <p class="q">1. M&amp;M's「只溶在口，不溶在手」最典型体现了？</p>
+      <div class="opts">
+        <button class="opt" type="button">定位理论</button>
+        <button class="opt" type="button">USP 独特销售主张</button>
+        <button class="opt" type="button">4P 理论</button>
+      </div>
+      <p class="tip">正解：USP。它给出了对手没有的、具体且有力的产品利益点。</p>
+    </div>
+
+    <div class="quiz reveal" data-answer="0" style="--d:.34s">
+      <p class="q">2. AIDA 模型中的「D」指的是？</p>
+      <div class="opts">
+        <button class="opt" type="button">Desire 欲望</button>
+        <button class="opt" type="button">Data 数据</button>
+        <button class="opt" type="button">Design 设计</button>
+      </div>
+      <p class="tip">正解：Desire。注意 → 兴趣 → 欲望 → 行动。</p>
+    </div>
+  </section>
+
+  <!-- 7 结算 -->
+  <section class="page">
+    <div class="kicker reveal" style="--d:.05s">完成</div>
+    <h2 class="reveal" style="--d:.12s">你已拿到<br><span class="accent">广告学入场券</span></h2>
+
+    <div class="score reveal" style="--d:.20s">
+      <b id="scoreNum">0</b><span>/ 2 答对</span>
+    </div>
+
+    <p class="lead reveal" style="--d:.28s">
+      「消费者不是傻瓜，她是你的妻子。」<br>—— 大卫·奥格威
+    </p>
+
+    <button class="again reveal" id="again" type="button" style="--d:.36s">再玩一次</button>
+  </section>
+
+</div>
+
+<nav class="dots" id="dots" aria-label="页面导航"></nav>
+
+<script>
+(function () {
+  var scroller = document.getElementById('scroller');
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var dotsWrap = document.getElementById('dots');
+  var scoreNum = document.getElementById('scoreNum');
+  var againBtn = document.getElementById('again');
+  var correct = 0;
+
+  /* --- 侧边导航点 --- */
+  var dots = pages.map(function (page, i) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'dot';
+    btn.setAttribute('aria-label', '第 ' + (i + 1) + ' 页');
+    btn.addEventListener('click', function () {
+      page.scrollIntoView({ behavior: 'smooth' });
+    });
+    dotsWrap.appendChild(btn);
+    return btn;
+  });
+
+  /* --- 滚动进入视口时触发动画 --- */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('in');
+      var idx = pages.indexOf(entry.target);
+      dots.forEach(function (d, j) {
+        d.classList.toggle('active', j === idx);
+      });
+    });
+  }, { root: scroller, threshold: 0.45 });
+
+  pages.forEach(function (p) { io.observe(p); });
+
+  /* --- 小测验 --- */
+  Array.prototype.forEach.call(document.querySelectorAll('.quiz'), function (quiz) {
+    var answerIndex = Number(quiz.dataset.answer);
+    var opts = Array.prototype.slice.call(quiz.querySelectorAll('.opt'));
+
+    opts.forEach(function (opt, i) {
+      opt.addEventListener('click', function () {
+        if (quiz.classList.contains('done')) return;
+        quiz.classList.add('done');
+
+        opts[answerIndex].classList.add('ok');
+        if (i !== answerIndex) opt.classList.add('bad');
+        if (i === answerIndex) correct++;
+
+        if (scoreNum) scoreNum.textContent = String(correct);
+      });
+    });
+  });
+
+  /* --- 重玩 --- */
+  if (againBtn) {
+    againBtn.addEventListener('click', function () {
+      correct = 0;
+      if (scoreNum) scoreNum.textContent = '0';
+
+      Array.prototype.forEach.call(document.querySelectorAll('.quiz'), function (quiz) {
+        quiz.classList.remove('done');
+        Array.prototype.forEach.call(quiz.querySelectorAll('.opt'), function (o) {
+          o.classList.remove('ok', 'bad');
+        });
+      });
+
+      scroller.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body>
+</html>
