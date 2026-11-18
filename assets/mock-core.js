@@ -170,8 +170,8 @@
           area: group.area,
           seats: group.seats,
           sceneCode: ti === 0 ? 'demo' : 'scene' + name.toLowerCase(),
-          qrCodeUrl: null,
-          qrContent: 'https://example.com/t/' + (ti === 0 ? 'demo' : 'scene' + name.toLowerCase()),
+          qrCodeUrl: '/test/assets/qr/table-' + (ti === 0 ? 'demo' : 'scene' + name.toLowerCase()) + '.png',
+          qrContent: 'https://nanliang9178-ui.github.io/test/t/' + (ti === 0 ? 'demo' : 'scene' + name.toLowerCase()),
         });
         ti += 1;
       }

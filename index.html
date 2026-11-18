@@ -128,10 +128,33 @@
       table.accounts th { font-size: 12px; color: #a2907f; font-weight: 600; letter-spacing: 0.04em; }
       table.accounts tr:last-child td { border-bottom: 0; }
       .tag { font-size: 11px; color: var(--brand-deep); background: var(--brand-soft); border-radius: 999px; padding: 2px 8px; }
+      .qr-hero {
+        margin-top: 34px; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center;
+        background: linear-gradient(135deg, #fffdfa 0%, #fff4ea 100%);
+        border: 1px solid var(--line); border-radius: 24px; padding: 28px 30px;
+        box-shadow: 0 20px 48px -32px rgba(80, 45, 20, 0.45);
+      }
+      .qr-hero img {
+        width: 224px; height: 224px; border-radius: 28px; background: #fff; padding: 10px;
+        border: 1px solid var(--line); box-shadow: 0 16px 34px -20px rgba(80, 45, 20, 0.5);
+      }
+      .qr-hero h2 { margin: 10px 0 8px; font-size: 22px; letter-spacing: -0.01em; }
+      .qr-hero p { margin: 0 0 6px; color: var(--ink-soft); font-size: 14px; }
+      .qr-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+      .qr-chip {
+        font-size: 13px; padding: 8px 15px; border-radius: 999px;
+        border: 1px solid var(--line); background: #fff; color: var(--ink-soft); transition: 0.2s;
+      }
+      .qr-chip:hover { border-color: #ffc8ad; color: var(--brand-deep); background: #fffaf5; }
+      .qr-note { margin-top: 12px; font-size: 12px; color: #a2907f; }
+
       .foot { margin-top: 30px; color: #a2907f; font-size: 12.5px; display: flex; flex-wrap: wrap; gap: 6px 14px; justify-content: space-between; }
 
       @media (max-width: 860px) {
-        .grid { grid-template-columns: 1fr; }
+        .qr-hero { grid-template-columns: 1fr; text-align: center; justify-items: center; padding: 24px 20px; }
+        .qr-hero img { width: 200px; height: 200px; }
+        .qr-actions { justify-content: center; }
+
         .row-links { grid-template-columns: 1fr; }
         .hero { padding-top: 42px; }
         .wrap { width: calc(100% - 32px); }
@@ -159,6 +182,21 @@
           整套前端在这里直接运行，<strong>不依赖后端服务器</strong>（接口由浏览器内的 Mock 数据层模拟）。
         </p>
         <p class="hint">电脑浏览器和手机浏览器都可以打开；建议先用手机打开顾客端点单，再到电脑上开商户后台看新订单。</p>
+      </section>
+
+      <section class="qr-hero">
+        <img src="/test/assets/qr/order.png" alt="扫码点餐二维码：手机扫码直接打开 A01 桌点餐页" width="224" height="224" />
+        <div>
+          <span class="eyebrow">扫码直达 · 手机扫一扫</span>
+          <h2>掏出手机扫这个码，直接进入点餐画面</h2>
+          <p>用手机相机或微信「扫一扫」对准左边的圆点桌码（演示桌台 A01），不用装 App、不用登录，扫完就能选菜下单、买单。</p>
+          <div class="qr-actions">
+            <a class="qr-chip" href="/test/qr/">查看全部 15 个桌码 ↗</a>
+            <a class="qr-chip" href="/test/t/demo">电脑上直接打开 ↗</a>
+            <a class="qr-chip" href="/test/assets/qr/order.png" download="天枢点单-A01桌码.png">下载这张桌码</a>
+          </div>
+          <p class="qr-note">桌码也能在商户后台「桌码管理」里批量下载、打印；每个桌位有独立场景码，扫码后自动带出桌号。</p>
+        </div>
       </section>
 
       <section class="grid">

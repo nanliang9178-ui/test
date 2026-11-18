@@ -494,7 +494,7 @@
     if (path === '/admin/tables' && method === 'GET') {
       var areas = [];
       db.tables.forEach(function (t) { if (areas.indexOf(t.area) < 0) areas.push(t.area); });
-      return { list: db.tables, areas: areas, total: db.tables.length, publicBaseUrl: window.location.origin + '/test/t/' };
+      return { list: db.tables, areas: areas, total: db.tables.length, publicBaseUrl: window.location.origin + (window.location.pathname.split('/admin')[0] || '') };
     }
 
     if (path === '/admin/tables/batch' && method === 'POST') {
