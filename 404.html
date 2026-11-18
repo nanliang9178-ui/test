@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#FF5A1F" />
+    <title>天枢点单 · 演示</title>
+    <noscript><meta http-equiv="refresh" content="0; url=/test/" /></noscript>
+  </head>
+  <body>
+    <div id="root">
+      <div style="font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; color: #6f625a; padding: 48px 24px; text-align: center;">
+        正在加载「天枢点单」演示版…
+      </div>
+    </div>
+    <script>
+      /*
+       * GitHub Pages 的 404 兜底：顾客端 /test/t/... 与商户后台 /test/admin/...
+       * 都是单页应用，直接打开深层链接时由本页按路径分发到对应外壳。
+       * 必须绝对路径（/test/...），因为 404 页可能出现在任意深度的 URL 上。
+       */
+      (function () {
+        var p = location.pathname.replace(/\/+$/, '') || '/';
+        var isH5 = p === '/test/t' || p.indexOf('/test/t/') === 0;
+        var isAdmin = p === '/test/admin' || p.indexOf('/test/admin/') === 0;
+
+        if (!isH5 && !isAdmin) {
+          location.replace('/test/');
+          return;
+        }
+
+        var cfg = isH5
+          ? {
+              title: '扫码点单 · 天枢点单',
+              icon: '/test/t/favicon.svg',
+              css: '/test/t/assets/h5-app.css',
+              mocks: ['/test/assets/mock-core.js', '/test/t/mock-h5.js'],
+              app: '/test/t/assets/h5-app.js',
+            }
+          : {
+              title: '天枢点单 · 商户工作台',
+              icon: '/test/admin/favicon.svg',
+              css: '/test/admin/assets/admin-app.css',
+              mocks: ['/test/assets/mock-core.js', '/test/admin/mock-admin.js'],
+              app: '/test/admin/assets/admin-app.js',
+            };
+
+        document.title = cfg.title;
+
+        var icon = document.createElement('link');
+        icon.rel = 'icon';
+        icon.type = 'image/svg+xml';
+        icon.href = cfg.icon;
+        document.head.appendChild(icon);
+
+        var css = document.createElement('link');
+        css.rel = 'stylesheet';
+        css.crossOrigin = 'anonymous';
+        css.href = cfg.css;
+        document.head.appendChild(css);
+
+        var index = 0;
+
+        function loadScript(src, done) {
+          var script = document.createElement('script');
+          script.src = src;
+          script.async = false;
+          script.onload = done;
+          script.onerror = function () {
+            console.error('[tianshu-demo] 脚本加载失败：' + src);
+            done();
+          };
+          document.body.appendChild(script);
+        }
+
+        function loadApp() {
+          var script = document.createElement('script');
+          script.type = 'module';
+          script.crossOrigin = 'anonymous';
+          script.src = cfg.app;
+          document.body.appendChild(script);
+        }
+
+        function next() {
+          if (index < cfg.mocks.length) {
+            loadScript(cfg.mocks[index++], next);
+            return;
+          }
+          loadApp();
+        }
+
+        next();
+      })();
+    </script>
+  </body>
+</html>
